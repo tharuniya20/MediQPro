@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediQ Pro</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--red:#dc2626;--rl:#fef2f2;--rm:#fca5a5;--blue:#1d4ed8;--bl:#eff6ff;--bm:#93c5fd;--green:#16a34a;--gl:#f0fdf4;--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--sh:0 1px 6px rgba(0,0,0,.07)}
+[data-theme=dark]{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--border:#334155;--rl:#3a0a0a;--bl:#0a1628;--gl:#052110}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;font-size:13px}
+header{background:var(--red);color:#fff;padding:0 12px;height:50px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;flex-shrink:0}
+.logo{font-size:14px;font-weight:800}.logo span{opacity:.8;font-weight:400;font-size:10px;display:block}
+.hbtn{background:rgba(255,255,255,.2);border:none;color:#fff;padding:5px 9px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:600;margin-left:5px}
+.sos{background:#fff;color:var(--red);padding:5px 11px;border-radius:20px;font-size:11px;font-weight:800;cursor:pointer;border:none}
+.layout{display:flex;flex:1;height:calc(100vh - 50px);overflow:hidden}
+aside{width:195px;background:var(--card);border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0}
+aside::-webkit-scrollbar{width:3px}aside::-webkit-scrollbar-thumb{background:var(--border)}
+.slbl{padding:8px 10px 3px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.7px}
+.sbtn{display:flex;align-items:center;gap:7px;width:100%;padding:7px 10px;border:none;background:none;cursor:pointer;border-radius:7px;color:var(--text);font-size:12px;font-weight:500;transition:.15s;margin-bottom:1px}
+.sbtn:hover{background:var(--bg)}.sbtn.active{background:var(--rl);color:var(--red);font-weight:700}
+.sic{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+main{flex:1;overflow-y:auto;padding:13px}main::-webkit-scrollbar{width:4px}main::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.tabs{display:flex;gap:3px;background:var(--bg);border-radius:9px;padding:3px;margin-bottom:12px}
+.tab{flex:1;padding:6px 3px;border:none;background:none;border-radius:7px;cursor:pointer;font-size:11px;font-weight:600;color:var(--muted);transition:.15s}
+.tab.active{background:var(--card);color:var(--text);box-shadow:var(--sh)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:9px}
+.ctitle{font-size:12px;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:5px}
+.sh{border-radius:12px;padding:11px 13px;margin-bottom:11px;display:flex;align-items:center;gap:9px}
+.sh h2{font-size:14px;font-weight:800;margin-bottom:1px}.sh p{font-size:11px;opacity:.8}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:9px}
+.chip{padding:7px 8px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:11px;cursor:pointer;text-align:left;display:block;width:100%;user-select:none;touch-action:manipulation;transition:border-color .15s,background .15s,color .15s}
+.chip:hover,.chip.sel{border-color:var(--red)!important;background:var(--rl)!important;color:var(--red)!important}.chip.sel{font-weight:700}
+.uz{border:2px dashed var(--border);border-radius:9px;padding:11px;text-align:center;cursor:pointer;transition:.15s;margin-bottom:7px;position:relative;overflow:hidden}
+.uz:hover{border-color:var(--red);background:var(--rl)}.uz input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.pw{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}
+.pi{width:48px;height:48px;border-radius:6px;object-fit:cover;border:1px solid var(--border)}
+input[type=text],input[type=date],input[type=time],input[type=tel],select,textarea{width:100%;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;background:var(--card);color:var(--text);outline:none;font-family:inherit;transition:.15s;margin-bottom:5px}
+input:focus,textarea:focus,select:focus{border-color:var(--red)}
+textarea{resize:none;min-height:52px;margin-bottom:5px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:5px}.fr input,.fr select{margin-bottom:0}
+.btn{padding:8px 13px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-weight:700;transition:.15s;display:block;width:100%;margin-bottom:5px}
+.btn:active{transform:scale(.97)}
+.br{background:var(--red);color:#fff}.br:hover{background:#b91c1c}
+.bo{background:none;border:1.5px solid var(--red);color:var(--red)}
+.bg2{background:var(--green);color:#fff}.bb{background:var(--blue);color:#fff}
+.bsm{width:auto;display:inline-block;padding:4px 9px;font-size:10px;margin-bottom:0}
+.cbox{display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto;margin:5px 0}
+.cbox::-webkit-scrollbar{width:3px}.cbox::-webkit-scrollbar-thumb{background:var(--border)}
+.bbl{padding:7px 10px;border-radius:10px;font-size:12px;line-height:1.5;max-width:92%;white-space:pre-wrap;word-break:break-word}
+.bbl.user{background:var(--red);color:#fff;align-self:flex-end;border-bottom-right-radius:3px}
+.bbl.ai{background:var(--bg);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:3px}
+.bbl.loading{opacity:.6;font-style:italic}
+.cr{display:flex;gap:5px;margin-top:5px}.cr input{flex:1;margin:0}
+.cs{background:var(--red);color:#fff;border:none;border-radius:8px;padding:8px 11px;cursor:pointer;font-size:13px;flex-shrink:0}
+.hc{border:1px solid var(--border);border-radius:11px;margin-bottom:9px;overflow:hidden;background:var(--card)}
+.hh{padding:10px 12px;display:flex;align-items:flex-start;gap:9px;cursor:pointer;transition:.15s}
+.hh:hover{background:var(--bg)}
+.hb{display:none;border-top:1px solid var(--border)}.hb.open{display:block}
+.mf{width:100%;height:180px;border:0;display:block}
+.dr{display:flex;justify-content:space-between;align-items:center;padding:7px 12px;border-bottom:1px solid var(--border);font-size:11px;gap:5px}
+.dr:last-child{border-bottom:0}
+.ay{background:var(--gl);color:var(--green);padding:2px 6px;border-radius:20px;font-size:10px;font-weight:700;flex-shrink:0}
+.an{background:#fff7ed;color:#ea580c;padding:2px 6px;border-radius:20px;font-size:10px;font-weight:700;flex-shrink:0}
+.aitem{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 10px;background:var(--bg);border-radius:8px;margin-bottom:5px;border-left:3px solid var(--red)}
+.ritem{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg);border-radius:8px;margin-bottom:5px;border-left:3px solid var(--blue)}
+.db{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:2px 4px;flex-shrink:0}.db:hover{color:var(--red)}
+.rb{border-radius:10px;padding:11px;margin-top:7px;font-size:12px}
+.rb.mild{background:var(--gl);border:1px solid #86efac}
+.rb.moderate{background:#fffbeb;border:1px solid #fcd34d}
+.rb.critical{background:var(--rl);border:1px solid var(--rm)}
+.svbar{height:5px;border-radius:5px;background:var(--border);margin:4px 0;overflow:hidden}
+.svfill{height:100%;border-radius:5px;transition:.5s}
+/* VOICE BUTTONS */
+.vbtn{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);transition:.15s;display:inline-flex;align-items:center;gap:6px}
+.vbtn.start{background:var(--gl);color:var(--green);border-color:#86efac}
+.vbtn.start:hover{background:#dcfce7}
+.vbtn.stop{background:var(--rl);color:var(--red);border-color:var(--rm)}
+.vbtn.stop:hover{background:#fecaca}
+@keyframes recpulse{0%{box-shadow:0 0 0 0 rgba(220,38,38,.5)}70%{box-shadow:0 0 0 10px rgba(220,38,38,0)}100%{box-shadow:0 0 0 0 rgba(220,38,38,0)}}
+.rdot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pd 1s infinite}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:11px}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:9px;text-align:center}
+.sn{font-size:19px;font-weight:800;color:var(--red)}.sl{font-size:10px;color:var(--muted);margin-top:1px}
+.hi{padding:6px 9px;background:var(--bg);border-radius:7px;margin-bottom:4px;border-left:3px solid var(--red);font-size:11px}
+.disc{background:#fff7ed;border:1px solid #fcd34d;border-radius:8px;padding:7px 9px;font-size:11px;color:#92400e;margin-bottom:9px}
+.warn{background:var(--rl);border:1px solid var(--rm);border-radius:8px;padding:8px 10px;font-size:11px;color:#991b1b;margin-bottom:9px}
+.lpick{background:linear-gradient(135deg,#1d4ed8,#0891b2);color:#fff;border-radius:12px;padding:16px;margin-bottom:12px;text-align:center}
+.lpick h3{font-size:15px;font-weight:800;margin-bottom:5px}
+.lpick p{font-size:11px;opacity:.85;margin-bottom:12px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.cbtn{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;padding:9px 6px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:600;transition:.2s;text-align:center}
+.cbtn:hover{background:rgba(255,255,255,.3)}.cbtn.active{background:#fff;color:var(--blue);font-weight:800}
+.cloc{display:inline-flex;align-items:center;gap:4px;background:var(--bl);color:var(--blue);border:1px solid var(--bm);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;cursor:pointer;margin-bottom:10px;border:none}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--card);border-radius:15px;padding:18px;width:90%;max-width:320px;text-align:center}
+.modal .big{font-size:30px;font-weight:800;color:var(--red);letter-spacing:2px;margin:5px 0}
+.cbx{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 16px;cursor:pointer;font-size:12px;margin-top:6px;color:var(--text)}
+.toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:7px 15px;border-radius:20px;font-size:12px;z-index:999;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+#ss{font-size:11px;padding:5px 8px;margin:6px 8px 3px;width:calc(100% - 16px)}
+.mob{display:none}
+@media(max-width:580px){aside{position:fixed;left:-205px;top:50px;height:calc(100vh - 50px);z-index:150;transition:.25s;box-shadow:4px 0 14px rgba(0,0,0,.15)}aside.open{left:0}.mob{display:block}.sg{grid-template-columns:1fr 1fr}.cgrid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body data-theme="light">
+
+<div class="overlay" id="cmodal">
+  <div class="modal">
+    <div style="font-size:24px">📞</div>
+    <h3 style="font-size:13px;margin:5px 0 2px" id="ctitle">Call</h3>
+    <p style="font-size:11px;color:var(--muted)" id="cdesc"></p>
+    <div class="big" id="cnum">108</div>
+    <a id="clink" href="tel:108" style="display:block;background:var(--red);color:#fff;border-radius:9px;padding:10px;font-size:14px;font-weight:800;text-decoration:none;margin-bottom:6px">📞 Call Now</a>
+    <button class="cbx" onclick="closeM('cmodal')">Close</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<header>
+  <div style="display:flex;align-items:center;gap:7px">
+    <button class="hbtn mob" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+    <div class="logo">MediQ Pro<span id="clbl">📍 Select Location…</span></div>
+  </div>
+  <div style="display:flex;align-items:center">
+    <button class="hbtn" id="tmbtn" onclick="toggleTheme()">🌙</button>
+    <button class="sos" onclick="call('108','Ambulance')">🆘 SOS</button>
+  </div>
+</header>
+
+<div class="layout">
+<aside id="sidebar">
+  <input type="text" id="ss" placeholder="Search specialty…" oninput="buildSB(this.value)">
+  <div class="slbl">Specialties</div>
+  <div id="sl"></div>
+  <div class="slbl" style="margin-top:4px">Quick Access</div>
+  <button class="sbtn" id="nav-db" onclick="show('dashboard')"><span class="sic" style="background:#f1f5f9">📊</span>Dashboard</button>
+  <button class="sbtn" id="nav-appts" onclick="show('appts')"><span class="sic" style="background:#eff6ff">📅</span>Appointments</button>
+  <button class="sbtn" id="nav-rems" onclick="show('rems')"><span class="sic" style="background:#f0fdf4">💊</span>Reminders</button>
+  <button class="sbtn" id="nav-hosps" onclick="show('hosps')"><span class="sic" style="background:#fef2f2">🏥</span>All Hospitals</button>
+</aside>
+<main id="main"></main>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// COMPLETE HOSPITAL + CLINIC DATABASE  (unique doctors per facility)
+// ══════════════════════════════════════════════════════════════
+const DB = {
+
+  // ─── MOGAPPAIR / MUGAPPAIR / AMBATTUR ────────────────────────
+  chennai_north:[
+    {id:'flh',name:'Frontier Lifeline Hospital',badge:'120-bed Cardiac Specialty',area:'Mogappair',
+     address:'R-30C, Ambattur Industrial Estate Road, Mogappair, Chennai – 600037',
+     phone:'044-26560400',emergency:'044-26560400',type:'hospital',
+     booking:'https://www.practo.com/chennai/hospital/frontier-lifeline-hospital-mogappair/doctors',
+     about:'Dr. K.M. Cherian Heart Foundation — 120-bed cardiac specialty hospital. World-class cardiac care for adult and paediatric patients from India and 21 countries. Bypass surgery, valve replacements, stem cell therapy, heart & lung transplant.',
+     lat:13.096,lng:80.168,icon:'🏥',
+     specialties:['Cardiology','Cardiac Surgery','Pulmonology','Pediatric Cardiology'],
+     doctors:[
+       {n:'Dr. K.M. Cherian',spec:'Cardiac Surgery',qual:'D.Sc, FRACS — Founder & Chairman',exp:'50 yrs',av:false},
+       {n:'Dr. Ajeet Arulkumar',spec:'Cardiology',qual:'DM Cardiology, Interventional Cardiologist',exp:'18 yrs',av:true},
+       {n:'Dr. Rajaram Anatharaman',spec:'Cardiology',qual:'DM Cardiology, Interventional',exp:'20 yrs',av:true},
+       {n:'Dr. Sanjay Cherian',spec:'Cardiology',qual:'DM Cardiology',exp:'15 yrs',av:false},
+       {n:'Dr. Joy M. Thomas',spec:'Cardiology',qual:'DM Cardiology',exp:'16 yrs',av:true},
+       {n:'Dr. Raghavan Subramanyan',spec:'Cardiology',qual:'DM Cardiology',exp:'22 yrs',av:true},
+     ]},
+    {id:'mmm',name:'Madras Medical Mission',badge:'NABH · 700 beds',area:'Mogappair',
+     address:'4A, Dr J.J. Nagar, Mogappair, Chennai – 600037',
+     phone:'044-26565961',emergency:'044-26565961',type:'hospital',
+     booking:'https://www.mmm.org.in/book-appointment',
+     about:"Non-profit 700-bed hospital. Asia's highest volume cardiac surgery centre. Affordable cardiac care, renal transplant and neurology.",
+     lat:13.100,lng:80.193,icon:'🏥',
+     specialties:['Cardiology','Cardiac Surgery','Nephrology','Neurology','Urology','Gastro'],
+     doctors:[
+       {n:'Dr. Jered Livingston K.',spec:'Cardiology',qual:'DM Cardiology',exp:'15 yrs',av:true},
+       {n:'Dr. Syed Afroze Hussain',spec:'Cardiology',qual:'DM Cardiology',exp:'12 yrs',av:false},
+       {n:'Dr. Vidhya Narasimhan',spec:'Cardiology',qual:'DM Cardiology',exp:'10 yrs',av:true},
+       {n:'Dr. Ponnudurai R.',spec:'Nephrology',qual:'DM Nephrology',exp:'18 yrs',av:true},
+       {n:'Dr. Aravindan A.',spec:'Neurology',qual:'DM Neurology',exp:'14 yrs',av:false},
+     ]},
+    {id:'smf_mog',name:'SMF Hospital — Mogappair',badge:'Sundaram Medical Foundation · 230 beds',area:'Mogappair West',
+     address:'Elango Salai Road, Mogappair West, Chennai – 600037',
+     phone:'044-26144240',emergency:'044-26144240',type:'hospital',
+     booking:'https://smf.in/contact',
+     about:'Trusted non-profit multi-speciality hospital est. 1990. 230 beds across Anna Nagar & Mogappair. Cardiology, nephrology, gastroenterology, orthopaedics, ENT, critical care and more.',
+     lat:13.093,lng:80.171,icon:'🏥',
+     specialties:['Cardiology','Nephrology','Gastro','Orthopedics','ENT','Pediatrics','Critical Care'],
+     doctors:[
+       {n:'Dr. Joy M. Thomas',spec:'Cardiology',qual:'DM Cardiology',exp:'16 yrs',av:true},
+       {n:'Dr. Lazarus Rajiv B. Padankatti',spec:'Orthopedics',qual:'MS Orthopaedics',exp:'14 yrs',av:true},
+       {n:'Dr. Punitha',spec:'General Medicine',qual:'MD General Medicine',exp:'12 yrs',av:true},
+     ]},
+    {id:'vell_mog',name:'Velammal Hospital',badge:'Multi-Speciality',area:'Mugappair',
+     address:'191/3C, School Road, T.S.K. Nagar, Mugappair, Chennai – 600037',
+     phone:'044-26583030',emergency:'044-26583030',type:'hospital',
+     booking:'https://www.practo.com/chennai/hospital/velammal-hospital-mogappair',
+     about:'Multi-speciality hospital in Mugappair with general medicine, orthopaedics, gynecology and paediatrics. 24/7 emergency.',
+     lat:13.098,lng:80.175,icon:'🏥',
+     specialties:['Orthopedics','Gynecology','Pediatrics','Dermatology','ENT'],
+     doctors:[
+       {n:'Dr. S. Murugavel',spec:'Orthopedics',qual:'MS Orthopaedics',exp:'14 yrs',av:true},
+       {n:'Dr. P. Vanitha',spec:'Gynecology',qual:'MS OBG, DNB',exp:'16 yrs',av:true},
+       {n:'Dr. K. Balamurugan',spec:'Dermatology',qual:'MD Dermatology',exp:'11 yrs',av:false},
+     ]},
+    // PRIVATE CLINICS — Mogappair
+    {id:'ar_heart',name:'A R Heart Clinic',badge:'Cardiology Specialty Clinic',area:'Mogappair West',
+     address:'Mogappair West, Chennai – 600037',
+     phone:'044-26582020',emergency:'',type:'clinic',
+     booking:'https://www.practo.com/chennai/clinic/a-r-heart-clinic-mogappair',
+     about:"Verified Practo-listed cardiology clinic run by Dr. Anantharaman Rajaram — Interventional Cardiologist known for coronary angiogram, angioplasty & stenting. Rated 4.8★ by patients.",
+     lat:13.094,lng:80.170,icon:'🏪',
+     specialties:['Cardiology'],
+     doctors:[
+       {n:'Dr. Anantharaman Rajaram',spec:'Cardiology — Interventional',qual:'DM Cardiology, FSCAI',exp:'20 yrs',av:true},
+       {n:'Dr. Sandhya S.',spec:'Cardiology — Interventional',qual:'DM Cardiology',exp:'14 yrs',av:false},
+     ]},
+    {id:'manthra',name:'Manthra Hospital',badge:'General & Maternity',area:'Mugappair',
+     address:'1, VOC Street, Mugappair Road West, Chennai – 600037',
+     phone:'044-26581234',emergency:'044-26581234',type:'clinic',
+     booking:'https://www.practo.com/chennai/hospital/manthra-hospital-mogappair',
+     about:'Small private general & maternity hospital in Mugappair West. Walk-in OPD available. General medicine, obstetrics and paediatric care.',
+     lat:13.096,lng:80.172,icon:'🏪',
+     specialties:['Gynecology','Pediatrics','General Medicine'],
+     doctors:[
+       {n:'Dr. Geetha Rajan',spec:'Gynecology',qual:'MS OBG',exp:'18 yrs',av:true},
+     ]},
+    {id:'spandana',name:'Spandana Nursing Home',badge:'Private Nursing Home',area:'Mugappair West',
+     address:'6th Block, Mugappair West, Chennai – 600037',
+     phone:'044-26584567',emergency:'044-26584567',type:'clinic',
+     booking:'https://www.practo.com/chennai',
+     about:'Well-known private nursing home in Mugappair West for general medicine, minor surgeries and maternity care.',
+     lat:13.092,lng:80.174,icon:'🏪',
+     specialties:['General Medicine','Gynecology'],
+     doctors:[{n:'Dr. Radhika Krishnan',spec:'General Medicine',qual:'MBBS, MD',exp:'10 yrs',av:true}]},
+  ],
+
+  // ─── ANNA NAGAR / KILPAUK ────────────────────────────────────
+  chennai_central:[
+    {id:'smf_an',name:'SMF Hospital — Anna Nagar',badge:'Sundaram Medical Foundation · 230 beds',area:'Anna Nagar',
+     address:'9C, 4th Avenue, AH Block, Shanthi Colony, Anna Nagar, Chennai – 600040',
+     phone:'044-26144240',emergency:'044-26141234',type:'hospital',
+     booking:'https://smf.in/contact',
+     about:'Non-profit multi-speciality charitable hospital. 230+ beds, est. 1990. Cardiology, nephrology, gastroenterology, critical care and diagnostics. Appointment via 89391 38080.',
+     lat:13.085,lng:80.210,icon:'🏥',
+     specialties:['Cardiology','Nephrology','Gastro','Orthopedics','ENT','Ophthalmology','Pediatrics'],
+     doctors:[
+       {n:'Dr. P. Balakrishnan',spec:'Cardiology',qual:'DM Cardiology',exp:'22 yrs',av:true},
+       {n:'Dr. Suresh Munuswamy',spec:'Nephrology',qual:'DM Nephrology',exp:'17 yrs',av:false},
+       {n:'Dr. Amudha Sentivel',spec:'General Medicine',qual:'MD General Medicine',exp:'10 yrs',av:true},
+     ]},
+    {id:'rainbow_an',name:"Rainbow Children's Hospital",badge:'Paediatrics & Maternity · 100 beds',area:'Anna Nagar',
+     address:'Anna Nagar, Chennai – 600040',
+     phone:'044-66810000',emergency:'044-66810000',type:'hospital',
+     booking:'https://www.rainbowhospitals.in/our-centre/chennai/annanagar',
+     about:'100-bed specialty hospital for paediatric and maternity care. Neonatology, paediatric surgery, pulmonology, endocrinology and neurology.',
+     lat:13.086,lng:80.214,icon:'🏥',
+     specialties:['Pediatrics','Gynecology','Neonatology','Pulmonology','Neurology'],
+     doctors:[
+       {n:'Dr. Priya Sivarajan',spec:'Pediatrics',qual:'MD Pediatrics, MRCPCH',exp:'14 yrs',av:true},
+       {n:'Dr. Anu Preethi Dorai',spec:'Family Physician',qual:'MD Family Medicine',exp:'11 yrs',av:false},
+       {n:'Dr. K. Premalatha',spec:'Gynecology',qual:'MS OBG',exp:'16 yrs',av:true},
+     ]},
+    {id:'billroth',name:'Billroth Hospital',badge:'Multi-Speciality · Shenoy Nagar',area:'Shenoy Nagar / Anna Nagar border',
+     address:'43, Lakshmi Talkies Road, Shenoy Nagar, Chennai – 600030',
+     phone:'044-26260000',emergency:'044-26260000',type:'hospital',
+     booking:'https://billrothhospitals.com/appointments/',
+     about:'Well-established multi-speciality hospital near Anna Nagar. Known for cardiology, orthopaedics, neurology and ENT. 24/7 emergency care.',
+     lat:13.079,lng:80.220,icon:'🏥',
+     specialties:['Cardiology','Orthopedics','Neurology','ENT','Dermatology','Gastro'],
+     doctors:[
+       {n:'Dr. M. Karthikeyan',spec:'Cardiology',qual:'DM Cardiology',exp:'19 yrs',av:true},
+       {n:'Dr. S. Narayana Swamy',spec:'Orthopedics',qual:'MS Orthopaedics',exp:'15 yrs',av:false},
+       {n:'Dr. V. Lalitha',spec:'Dermatology',qual:'MD Dermatology',exp:'13 yrs',av:true},
+     ]},
+    {id:'sksh_an',name:'SKS Hospital',badge:'Multi-Speciality',area:'Anna Nagar West Extension',
+     address:'No.959, TVS Colony, Anna Nagar West Extension, Chennai – 600101',
+     phone:'044-26285959',emergency:'044-26285959',type:'hospital',
+     booking:'https://www.practo.com/chennai/hospital/sks-hospital-anna-nagar-west',
+     about:'Multi-speciality hospital in Anna Nagar West Extension. Cardiology, general medicine, orthopaedics and 24/7 emergency.',
+     lat:13.088,lng:80.195,icon:'🏥',
+     specialties:['Cardiology','Orthopedics','Gastro','Gynecology','Pediatrics'],
+     doctors:[
+       {n:'Dr. N. Krishnamurthy',spec:'Cardiology',qual:'DM Cardiology',exp:'16 yrs',av:true},
+       {n:'Dr. L. Sudha',spec:'Gynecology',qual:'MS OBG',exp:'12 yrs',av:false},
+     ]},
+    // PRIVATE CLINICS — Anna Nagar
+    {id:'apollo_clinic_an',name:'Apollo Clinic — Anna Nagar East',badge:'Apollo Clinic · OPD',area:'Anna Nagar East',
+     address:'6th Main Road, 2nd Avenue, Anna Nagar, Chennai – 600040',
+     phone:'044-42056789',emergency:'',type:'clinic',
+     booking:'https://www.apolloclinic.com/clinic-locator/india/tamil-nadu/chennai/anna-nagar-east',
+     about:'Full-spectrum Apollo multispeciality OPD clinic. Cardiology, dermatology, gynecology, ENT, orthopaedics, psychiatry. Digital patient records maintained.',
+     lat:13.084,lng:80.216,icon:'🏪',
+     specialties:['Cardiology','Dermatology','Gynecology','ENT','Orthopedics','Psychiatry'],
+     doctors:[
+       {n:'Dr. Aftab Mateen',spec:'Dermatology',qual:'MD Dermatology',exp:'12 yrs',av:true},
+       {n:'Dr. Aghilavendan P.',spec:'Orthopedics',qual:'MS Orthopaedics',exp:'12 yrs',av:true},
+       {n:'Dr. Anbazhahan Rajaram',spec:'Endocrinology',qual:'MD Endocrinology',exp:'10 yrs',av:false},
+     ]},
+    {id:'elite_an',name:'Elite Clinic',badge:'Multispeciality Clinic · Lab & Pharmacy',area:'Anna Nagar / Arumbakkam',
+     address:'Arumbakkam, Chennai – 600106',
+     phone:'97109 99666',emergency:'',type:'clinic',
+     booking:'https://www.practo.com/chennai',
+     about:'Multispeciality clinic with attached lab, diagnostic centre and pharmacy. Walk-in and appointment OPD.',
+     lat:13.082,lng:80.207,icon:'🏪',
+     specialties:['General Medicine','Dermatology','Pediatrics','ENT'],
+     doctors:[{n:'Dr. R. Prathap Kumar',spec:'General Medicine',qual:'MBBS, MD',exp:'9 yrs',av:true}]},
+  ],
+
+  // ─── ADYAR / MYLAPORE / VELACHERY ────────────────────────────
+  chennai_south:[
+    {id:'mgmmalar',name:'MGM Malar Hospital',badge:'NABH · Formerly Fortis Malar',area:'Adyar',
+     address:'52, 1st Main Road, Gandhinagar, Adyar, Chennai – 600020',
+     phone:'044-42892222',emergency:'044-42892222',type:'hospital',
+     booking:'https://mgmmalar.in/contact/',
+     about:'150-bed multi-speciality tertiary hospital. 150+ consultants. Robotic knee surgery, VELYS™ technology, cardiac catheterisation and advanced neurology.',
+     lat:13.001,lng:80.257,icon:'🏥',
+     specialties:['Cardiology','Neurology','Orthopedics','Nephrology','Gynecology','Gastro','Ophthalmology'],
+     doctors:[
+       {n:'Dr. Jothikumar Sethuraman',spec:'Cardiology',qual:'DM Cardiology',exp:'28 yrs',av:true},
+       {n:'Dr. Apoorva Raghavan',spec:'Cardiology',qual:'DM Cardiology',exp:'12 yrs',av:true},
+       {n:'Dr. Gayathri Rajesh',spec:'Neurology',qual:'DM Neurology',exp:'15 yrs',av:false},
+       {n:'Dr. Radhi Malar Anand',spec:'Ophthalmology',qual:'MS Ophthalmology',exp:'20 yrs',av:true},
+       {n:'Dr. Aravindan Selvaraj',spec:'Orthopedics',qual:'MS Orthopaedics, Fellowship Joint Replacement',exp:'13 yrs',av:true},
+     ]},
+    {id:'kauvery_mylapore',name:'Kauvery Hospital — Mylapore',badge:'NABH',area:'Mylapore',
+     address:'199, Luz Church Road, Mylapore, Chennai – 600004',
+     phone:'044-40006000',emergency:'044-40006000',type:'hospital',
+     booking:'https://www.kauveryhospital.com/book-appointment/',
+     about:'Major Kauvery branch in Mylapore. Cardiac care, 24/7 emergency, lung centre. Senior consultants across all departments.',
+     lat:13.036,lng:80.267,icon:'🏥',
+     specialties:['Cardiology','Pulmonology','Gastro','ENT','Dermatology','Endocrinology','Neurology'],
+     doctors:[
+       {n:'Dr. R. Jayachandran',spec:'Cardiology',qual:'DNB Cardiology',exp:'35 yrs',av:true},
+       {n:'Dr. K. Kannan',spec:'Cardiology',qual:'DM Cardiology',exp:'22 yrs',av:false},
+       {n:'Dr. Muralidharan Rajagopalan',spec:'Dermatology',qual:'MD Dermatology',exp:'25 yrs',av:true},
+       {n:'Dr. Nagarajan Ramakrishnan',spec:'Pulmonology',qual:'DNB Pulmonology',exp:'18 yrs',av:true},
+     ]},
+    {id:'vhs',name:'Voluntary Health Services (VHS)',badge:'35+ Specialties · Tertiary Care',area:'Adyar / Taramani',
+     address:'TTTI Post, Adyar, Chennai – 600113',
+     phone:'044-22542971',emergency:'044-22542971',type:'hospital',
+     booking:'https://www.vhschennai.org',
+     about:'VHS is a comprehensive tertiary care hospital with 35+ specialties serving South Chennai. Affordable, trusted care since 1958.',
+     lat:12.994,lng:80.243,icon:'🏥',
+     specialties:['Cardiology','Dermatology','Neurology','Orthopedics','Gynecology','Pediatrics','ENT','Gastro'],
+     doctors:[
+       {n:'Dr. Sundar Rajan S.',spec:'Cardiology',qual:'DM Cardiology',exp:'18 yrs',av:true},
+       {n:'Dr. Kavitha Krishnan',spec:'Dermatology',qual:'MD Dermatology',exp:'14 yrs',av:false},
+     ]},
+    // CLINICS — South
+    {id:'mohan_mylapore',name:"Dr. Mohan's Diabetes Specialities Centre",badge:'Diabetes & Endocrinology Clinic',area:'Mylapore',
+     address:'No.4, Conran Smith Road, Gopalapuram, Chennai – 600086',
+     phone:'044-45010101',emergency:'',type:'clinic',
+     booking:'https://www.drmohansdiabetes.com/book-appointment/',
+     about:"World's most cited diabetes researcher. Flagship clinic. Best diabetes, thyroid and metabolic disorder care in South India.",
+     lat:13.042,lng:80.262,icon:'🏪',
+     specialties:['Endocrinology'],
+     doctors:[
+       {n:'Dr. V. Mohan',spec:'Endocrinology / Diabetes',qual:'PhD, DSc, FRCP, FNASc — Founder',exp:'40 yrs',av:false},
+       {n:'Dr. R. Pradeepa',spec:'Endocrinology',qual:'PhD Epidemiology',exp:'20 yrs',av:true},
+     ]},
+    {id:'vasan_adyar',name:'Vasan Eye Care Hospital',badge:'Eye Specialty · Adyar',area:'Adyar',
+     address:'Adyar, Chennai – 600020',
+     phone:'044-43000100',emergency:'',type:'clinic',
+     booking:'https://www.vasaneyecare.com/eye-hospital/adyar-chennai',
+     about:'Leading eye care chain. Comprehensive ophthalmology — cataract, LASIK, retina and glaucoma management.',
+     lat:13.003,lng:80.254,icon:'🏪',
+     specialties:['Ophthalmology'],
+     doctors:[{n:'Dr. Vasan Eye Team',spec:'Ophthalmology',qual:'MS Ophthalmology',exp:'Varies',av:true}]},
+  ],
+
+  // ─── GREAMS ROAD / EGMORE / THOUSAND LIGHTS ──────────────────
+  chennai_city:[
+    {id:'apollo_gr',name:'Apollo Hospitals — Greams Road',badge:'JCI & NABH Flagship',area:'Greams Road',
+     address:'21, Greams Lane, Off Greams Road, Chennai – 600006',
+     phone:'044-28290200',emergency:'044-28293333',type:'hospital',
+     booking:'https://www.apollo247.com/hospital/apollo-hospitals-greams-road-in-chennai-7fc430f1-249f-4440-81b4-9d0e3c4565f7',
+     about:"India's first JCI-accredited hospital est. 1983. 550+ beds, 60+ departments, 250+ specialists. 1500+ daily OPD. Excellence in cardiology, oncology, neurosciences.",
+     lat:13.058,lng:80.253,icon:'🏥',
+     specialties:['Cardiology','Neurology','Dermatology','Oncology','Orthopedics','Gastro','Gynecology','Pediatrics','ENT','Psychiatry','Endocrinology','Pulmonology'],
+     doctors:[
+       {n:'Dr. K.P. Suresh Kumar',spec:'Cardiology',qual:'DM Cardiology, FACC, FESC',exp:'25 yrs',av:true},
+       {n:'Dr. Deep Chandh Raja S.',spec:'Cardiology',qual:'DM Cardiology, FESC',exp:'18 yrs',av:true},
+       {n:'Dr. Robert Mao',spec:'Cardiology',qual:'DM Cardiology',exp:'20 yrs',av:false},
+       {n:'Dr. Maya Vedamurthy',spec:'Dermatology',qual:'MD Dermatology',exp:'22 yrs',av:true},
+       {n:'Dr. Murugsundaram C.',spec:'Dermatology',qual:'MD Dermatology, Fellowship Cosmetic Derm',exp:'18 yrs',av:false},
+       {n:'Dr. Priya Kannappan',spec:'Gynecology',qual:'MS OBG, MRCOG, FICOG',exp:'18 yrs',av:true},
+       {n:'Dr. R.P. Ilangho',spec:'Pulmonology',qual:'DTCD',exp:'37 yrs',av:false},
+     ]},
+    {id:'srmc',name:'Sri Ramachandra Medical Centre',badge:'NABH · Teaching Hospital',area:'Porur',
+     address:'No.1, Ramachandra Nagar, Porur, Chennai – 600116',
+     phone:'044-45928888',emergency:'044-45928888',type:'hospital',
+     booking:'https://www.sriramachandra.edu.in/hospital/appointment/',
+     about:'Premier teaching hospital with 30+ specialties. Known for endocrinology, oncology, cardiology.',
+     lat:13.039,lng:80.161,icon:'🏥',
+     specialties:['Endocrinology','Cardiology','Oncology','Neurology','Dermatology','Pediatrics','Psychiatry'],
+     doctors:[
+       {n:'Dr. J.S.M. Murthy',spec:'Cardiology',qual:'DM Cardiology',exp:'30 yrs',av:false},
+       {n:'Dr. T.R. Muralidharan',spec:'Cardiology',qual:'DM Cardiology, Sr. Consultant',exp:'28 yrs',av:true},
+       {n:'Dr. S. Nagendra Boopathy',spec:'Cardiology',qual:'DM Cardiology, FSCAI',exp:'20 yrs',av:true},
+     ]},
+    // CLINICS — City
+    {id:'rxdx_eg',name:'RxDx MultiClinic',badge:'Multispeciality Clinic',area:'Egmore',
+     address:'Egmore, Chennai – 600008',
+     phone:'044-35001111',emergency:'',type:'clinic',
+     booking:'https://rxdx.in',
+     about:'Modern OPD-only multispeciality clinic. Cardiology, dermatology, diabetes, orthopaedics. Quick appointments, minimal wait time.',
+     lat:13.074,lng:80.263,icon:'🏪',
+     specialties:['Cardiology','Dermatology','Endocrinology','Orthopedics','General Medicine'],
+     doctors:[{n:'Dr. RxDx Consultant',spec:'General Medicine',qual:'MD General Medicine',exp:'12 yrs',av:true}]},
+  ],
+
+  // ─── PORUR / MANAPAKKAM / VALASARAVAKKAM ─────────────────────
+  chennai_west:[
+    {id:'miot',name:'MIOT International',badge:'NABH & NABL · 1000 beds',area:'Manapakkam',
+     address:'4/112, Mount Poonamallee Road, Manapakkam, Chennai – 600089',
+     phone:'044-42002288',emergency:'044-42002299',type:'hospital',
+     booking:'https://www.miotinternational.com/appointments/',
+     about:"1000-bed quaternary care hospital. India's No.1 Orthopaedic Hospital. 63 specialties. Patients from 130+ countries.",
+     lat:13.015,lng:80.175,icon:'🏥',
+     specialties:['Orthopedics','Cardiology','Neurology','Spine Surgery','Gastro','Urology','Oncology'],
+     doctors:[
+       {n:'Dr. Charanjit Singh Dhillon',spec:'Spine Surgery',qual:'Senior Spine Surgeon',exp:'20 yrs',av:true},
+       {n:'Dr. Robert Coelho',spec:'Cardiac Surgery',qual:'MCh Cardiothoracic Surgery',exp:'22 yrs',av:false},
+       {n:'Dr. Ashok Selvaraj',spec:'Orthopedics',qual:'MS Orthopaedics, Fellowship Arthroscopy',exp:'15 yrs',av:true},
+       {n:'Dr. Senthil Velan',spec:'Orthopedics',qual:'HOD Upper Limb Surgery',exp:'18 yrs',av:true},
+       {n:'Dr. Paraneetharan M.',spec:'Neurosurgery',qual:'MCh Neurosurgery',exp:'27 yrs',av:false},
+       {n:'Dr. Surendran R.',spec:'Gastro',qual:'Director Surgical Gastroenterology',exp:'48 yrs',av:true},
+     ]},
+    {id:'kauvery_vadapalani',name:'Kauvery Hospital — Vadapalani',badge:'NABH',area:'Vadapalani',
+     address:'Vadapalani, Chennai – 600026',
+     phone:'044-48006000',emergency:'044-48006000',type:'hospital',
+     booking:'https://www.kauveryhospital.com/book-appointment/',
+     about:'Kauvery multispeciality hospital in Vadapalani. Cardiac care, emergency and general surgery.',
+     lat:13.051,lng:80.210,icon:'🏥',
+     specialties:['Cardiology','Orthopedics','Gastro','ENT','Gynecology'],
+     doctors:[
+       {n:'Dr. V. Bhavani',spec:'Cardiology',qual:'DM Cardiology',exp:'14 yrs',av:true},
+       {n:'Dr. P. Sathya',spec:'Orthopedics',qual:'MS Orthopaedics',exp:'11 yrs',av:false},
+     ]},
+    // CLINICS — West
+    {id:'mohan_diabetes_porur',name:"Dr. Mohan's Diabetes Centre — KK Nagar",badge:'Diabetes Clinic',area:'KK Nagar / Porur',
+     address:'KK Nagar, Chennai – 600078',
+     phone:'044-45010101',emergency:'',type:'clinic',
+     booking:'https://www.drmohansdiabetes.com/book-appointment/',
+     about:"Dr. Mohan's national network diabetes centre.",lat:13.040,lng:80.196,icon:'🏪',
+     specialties:['Endocrinology'],
+     doctors:[{n:'Dr. Mohan\'s KK Nagar Team',spec:'Diabetes / Endocrinology',qual:'MD Diabetes',exp:'Varies',av:true}]},
+  ],
+
+  // ─── MADURAI ─────────────────────────────────────────────────
+  madurai:[
+    {id:'mmhrc',name:'Meenakshi Mission Hospital (MMHRC)',badge:'NABH · Largest in South TN',area:'Madurai',
+     address:'Lake Area, Melur Road, Madurai – 625107',
+     phone:'0452-4263000',emergency:'0452-2543000',type:'hospital',
+     booking:'https://mmhrc.in/contact-us/',
+     about:'750+ beds. Largest multispeciality hospital in South Tamil Nadu. Pioneer in super speciality care. Trusted by 10,000+ referral doctors.',
+     lat:9.955,lng:78.085,icon:'🏥',
+     specialties:['Cardiology','Cardiac Surgery','Oncology','Nephrology','Gastro','Orthopedics','Pediatrics','Neurology'],
+     doctors:[
+       {n:'Dr. J.K. Periasamy',spec:'Cardiology',qual:'DM Cardiology',exp:'30 yrs',av:true},
+       {n:'Dr. V. Rajasekaran',spec:'Cardiac Surgery',qual:'MCh Cardiothoracic',exp:'22 yrs',av:false},
+       {n:'Dr. K. Senthil Kumar',spec:'Dermatology',qual:'MD Dermatology',exp:'20 yrs',av:true},
+       {n:'Dr. S. Shanmugasundaram',spec:'Orthopedics',qual:'MS Orthopaedics',exp:'15 yrs',av:true},
+     ]},
+    {id:'apollo_mdu',name:'Apollo Hospital — Madurai',badge:'Apollo Group · NABH',area:'Madurai East',
+     address:'Madurai East, Madurai – 625010',
+     phone:'0452-6611111',emergency:'0452-6611000',type:'hospital',
+     booking:'https://www.practo.com/madurai/hospital/apollo-hospital-madurai-madurai-east',
+     about:'Apollo multispeciality hospital Madurai. 72+ specialists. Advanced cardiac, neuro and orthopaedic care.',
+     lat:9.935,lng:78.134,icon:'🏥',
+     specialties:['Cardiology','Neurology','Orthopedics','Gynecology','Pediatrics','Gastro','ENT','Dermatology'],
+     doctors:[
+       {n:'Dr. A. Sahida Parveen',spec:'Gynecology',qual:'MS OBG, DNB',exp:'15 yrs',av:true},
+       {n:'Dr. S. Sundararajan',spec:'Neurology',qual:'MCh Neurosurgery',exp:'22 yrs',av:true},
+       {n:'Dr. T. Marimuthu',spec:'Cardiology',qual:'DM Cardiology',exp:'17 yrs',av:false},
+     ]},
+    {id:'devadoss',name:'Devadoss Multispeciality Hospital',badge:'Orthopaedics Specialty',area:'Madurai',
+     address:'Madurai – 625001',
+     phone:'0452-2340777',emergency:'0452-2340777',type:'hospital',
+     booking:'https://devadosshospitals.com',
+     about:'Founded by Prof. A. Devadoss. 200-bed est. 2007. Renowned for bone & joint surgeries and trauma care.',
+     lat:9.958,lng:78.154,icon:'🏥',
+     specialties:['Orthopedics','Cardiology','Neurology','Gastro'],
+     doctors:[
+       {n:'Prof. A. Devadoss',spec:'Orthopedics',qual:'MS Orthopaedics — Founder',exp:'35 yrs',av:false},
+       {n:'Dr. Rajesh Devadoss',spec:'Orthopedics',qual:'MS Orthopaedics',exp:'15 yrs',av:true},
+       {n:'Dr. Kumaresan P.',spec:'Cardiology',qual:'DM Cardiology',exp:'12 yrs',av:true},
+     ]},
+    {id:'aravind_mdu',name:'Aravind Eye Hospital',badge:'World-Renowned · Ophthalmology',area:'Madurai',
+     address:'1, Anna Nagar, Madurai – 625020',
+     phone:'0452-4356100',emergency:'0452-4356100',type:'hospital',
+     booking:'https://www.aravind.org/content/appointments',
+     about:'World-renowned eye hospital est. 1976. Millions of eye surgeries performed. Best affordable cataract and retina surgery.',
+     lat:9.942,lng:78.128,icon:'🏥',
+     specialties:['Ophthalmology'],
+     doctors:[{n:'Aravind Eye Team',spec:'Ophthalmology',qual:'MS Ophthalmology',exp:'Varies',av:true}]},
+    {id:'vadamalayan_mdu',name:'Vadamalayan Hospitals',badge:'Multi-Specialty',area:'Madurai',
+     address:'Vallabhai Road, Madurai – 625003',
+     phone:'0452-4356565',emergency:'0452-4356565',type:'hospital',
+     booking:'https://www.vadamalyanhospitals.com',
+     about:'Established multispeciality hospital. Known for general medicine, cardiac and maternal care.',
+     lat:9.925,lng:78.120,icon:'🏥',
+     specialties:['Cardiology','Gynecology','Pediatrics','Neurology','ENT','Dermatology'],
+     doctors:[
+       {n:'Dr. P. Arun Kumar',spec:'Cardiology',qual:'DM Cardiology',exp:'16 yrs',av:true},
+       {n:'Dr. S. Meenakshi',spec:'Gynecology',qual:'MS OBG',exp:'14 yrs',av:true},
+     ]},
+    // CLINICS — Madurai
+    {id:'mohan_mdu',name:"Dr. Mohan's Diabetes Centre",badge:'Diabetes Clinic',area:'Madurai',
+     address:'Madurai, Tamil Nadu',phone:'0452-4500900',emergency:'',type:'clinic',
+     booking:'https://www.drmohansdiabetes.com/book-appointment/',
+     about:"Specialist diabetes and endocrinology clinic — Dr. Mohan's national network.",
+     lat:9.931,lng:78.119,icon:'🏪',
+     specialties:['Endocrinology'],
+     doctors:[{n:'Dr. R. Pradeepa',spec:'Endocrinology / Diabetes',qual:'PhD Diabetes',exp:'20 yrs',av:true}]},
+    {id:'suvasam_mdu',name:'Suvasam Lung & Chest Clinic',badge:'Pulmonology Clinic',area:'Madurai',
+     address:'Madurai, Tamil Nadu',phone:'0452-2222345',emergency:'',type:'clinic',
+     booking:'https://www.practo.com/madurai/pulmonologist',
+     about:'Specialist pulmonology and chest diseases clinic in Madurai.',
+     lat:9.919,lng:78.140,icon:'🏪',
+     specialties:['Pulmonology'],
+     doctors:[{n:'Dr. R. Narasimhan',spec:'Pulmonology',qual:'DTCD, Chest Diseases',exp:'22 yrs',av:true}]},
+  ],
+
+  // ─── COIMBATORE ──────────────────────────────────────────────
+  coimbatore:[
+    {id:'gknm',name:'G. Kuppuswamy Naidu Memorial (GKNM)',badge:'NABH · 600 beds',area:'Coimbatore',
+     address:'Pappanaickenpalayam, Coimbatore – 641037',
+     phone:'0422-4305000',emergency:'0422-4305000',type:'hospital',
+     booking:'https://www.gknmhospital.org/contact-us/',
+     about:"GKNM — Coimbatore's oldest and most trusted hospital. 600+ beds, 30+ specialties. Cardiac, orthopaedic and emergency care.",
+     lat:11.023,lng:76.956,icon:'🏥',
+     specialties:['Cardiology','Orthopedics','Neurology','Gastro','ENT','Gynecology','Dermatology','Pediatrics'],
+     doctors:[
+       {n:'Dr. P.G. Visvanathan',spec:'Dermatology',qual:'MD Dermatology',exp:'24 yrs',av:true},
+       {n:'Dr. B. Shanker',spec:'Dermatology',qual:'MD Dermatology',exp:'20 yrs',av:true},
+       {n:'Dr. Arun Prabhu Ganesan',spec:'Cardiology',qual:'DM Cardiology',exp:'15 yrs',av:false},
+       {n:'Dr. R. Ramachandran',spec:'Neurology',qual:'DM Neurology',exp:'16 yrs',av:true},
+     ]},
+    {id:'kmch',name:'Kovai Medical Center (KMCH)',badge:'NABH · Teaching Hospital',area:'Coimbatore',
+     address:'99, Avanashi Road, Coimbatore – 641014',
+     phone:'0422-4323800',emergency:'0422-4323800',type:'hospital',
+     booking:'https://www.kmchhospital.com/appointment/',
+     about:'350-bed teaching hospital. Multi-speciality with advanced diagnostics, ICU and trauma care.',
+     lat:11.024,lng:77.005,icon:'🏥',
+     specialties:['Cardiology','Neurology','Orthopedics','Oncology','Gastro','Endocrinology','Gynecology'],
+     doctors:[
+       {n:'Dr. N. Mohanasundaram',spec:'Cardiology',qual:'DM Cardiology',exp:'22 yrs',av:true},
+       {n:'Dr. Padmapriya Vivek',spec:'Gynecology',qual:'MS OBG',exp:'16 yrs',av:true},
+       {n:'Dr. Anitha Lakshmi',spec:'Endocrinology',qual:'DM Endocrinology',exp:'13 yrs',av:false},
+     ]},
+    {id:'ganga',name:'Ganga Hospital',badge:'National Referral — Orthopaedics',area:'Coimbatore',
+     address:'313, Mettupalayam Road, Coimbatore – 641043',
+     phone:'0422-2485000',emergency:'0422-2485000',type:'hospital',
+     booking:'https://www.gangahospital.com/contact-us/',
+     about:'National referral centre for orthopaedics, microsurgery and limb replantation. 400+ beds.',
+     lat:11.040,lng:76.989,icon:'🏥',
+     specialties:['Orthopedics','Spine Surgery','Neurology','Cardiology'],
+     doctors:[
+       {n:'Dr. S. Raja Sabapathy',spec:'Orthopedics / Microsurgery',qual:'MCh, FRCS — Founder',exp:'40 yrs',av:false},
+       {n:'Dr. Praveen Bhardwaj',spec:'Orthopedics',qual:'MS Orthopaedics',exp:'18 yrs',av:true},
+       {n:'Dr. Suresh Chandra Babu',spec:'Cardiology',qual:'DM Cardiology',exp:'15 yrs',av:true},
+     ]},
+    {id:'mohan_cbe',name:"Dr. Mohan's Diabetes Centre",badge:'Diabetes Clinic',area:'Coimbatore',
+     address:'Coimbatore, Tamil Nadu',phone:'0422-4500900',emergency:'',type:'clinic',
+     booking:'https://www.drmohansdiabetes.com/book-appointment/',
+     about:'Specialist diabetes centre — Dr. Mohan\'s national network.',
+     lat:11.016,lng:76.969,icon:'🏪',
+     specialties:['Endocrinology'],
+     doctors:[{n:'Dr. Mohan\'s CBE Team',spec:'Diabetes / Endocrinology',qual:'MD Diabetes',exp:'Varies',av:true}]},
+    {id:'vgm_cbe',name:'VGM Gastro Centre',badge:'Gastro Specialty',area:'Coimbatore',
+     address:'2100 Trichy Road, Coimbatore – 641005',
+     phone:'0422-4260000',emergency:'0422-4260000',type:'clinic',
+     booking:'https://www.practo.com/coimbatore/gastroenterologist',
+     about:'Specialist gastroenterology and hepatology centre with liver transplant and cath lab.',
+     lat:11.007,lng:77.023,icon:'🏪',
+     specialties:['Gastro'],
+     doctors:[{n:'Dr. V.G. Mohan Prasad',spec:'Gastroenterology / Hepatology',qual:'DM Gastro — National Expert',exp:'30 yrs',av:false}]},
+  ],
+
+  // ─── TRICHY ──────────────────────────────────────────────────
+  trichy:[
+    {id:'kauvery_trichy',name:'Kauvery Hospital (Heartcity)',badge:'NABH · Cardiac Specialty',area:'Trichy Cantonment',
+     address:'No.6, Royal Road, Cantonment, Trichy – 620001',
+     phone:'0431-4077777',emergency:'0431-4077777',type:'hospital',
+     booking:'https://www.kauveryhospital.com/book-appointment/',
+     about:"Kauvery's flagship cardiac hospital in Trichy. Expert cardiologists, advanced cath lab, PICU and 24/7 emergency.",
+     lat:10.821,lng:78.688,icon:'🏥',
+     specialties:['Cardiology','Neurology','Orthopedics','Pediatrics','ENT','Gastro'],
+     doctors:[
+       {n:'Dr. M. Nandhini',spec:'Cardiology',qual:'MD, DNB Cardiology, Fellowship Ped. Cardiology',exp:'15 yrs',av:true},
+       {n:'Dr. Anand Subramaniyan',spec:'Cardiology',qual:'DM Cardiology, FSCAI',exp:'14 yrs',av:true},
+       {n:'Dr. T. Joseph',spec:'Cardiology',qual:'DM Cardiology, MRCP London, PDF Electrophysiology',exp:'20 yrs',av:false},
+       {n:'Dr. B. Vijayasekaran',spec:'Cardiology',qual:'DM Cardiology',exp:'18 yrs',av:true},
+       {n:'Dr. A. Suraj Narasimhan',spec:'Cardiology',qual:'DM Cardiology, FNB Interventional',exp:'12 yrs',av:true},
+     ]},
+    {id:'miot_trichy',name:'MIOT Hospital Trichy',badge:'MIOT Group',area:'Trichy',
+     address:'Trichy, Tamil Nadu',
+     phone:'0431-4200200',emergency:'0431-4200200',type:'hospital',
+     booking:'https://www.miotinternational.com/appointments/',
+     about:'MIOT Group Trichy branch. Orthopaedics, cardiac and neurological care.',
+     lat:10.791,lng:78.705,icon:'🏥',
+     specialties:['Orthopedics','Cardiology','Neurology','Gastro'],
+     doctors:[
+       {n:'Dr. Surendran R.',spec:'Gastroenterology',qual:'Director Surgical Gastro',exp:'48 yrs',av:true},
+       {n:'Dr. Senthil Kumar T.',spec:'Orthopedics',qual:'MS Orthopaedics',exp:'14 yrs',av:false},
+     ]},
+    {id:'manipal_trichy',name:'Manipal Hospital Trichy',badge:'Multi-Speciality',area:'Trichy',
+     address:'Trichy, Tamil Nadu',
+     phone:'0431-4090000',emergency:'0431-4090000',type:'hospital',
+     booking:'https://www.manipalhospitals.com/trichy/appointment/',
+     about:'Manipal Group hospital in Trichy. Multispeciality with advanced diagnostics and emergency care.',
+     lat:10.810,lng:78.690,icon:'🏥',
+     specialties:['Cardiology','Neurology','Orthopedics','Oncology','Gastro','Gynecology'],
+     doctors:[
+       {n:'Dr. C. Srinivasan',spec:'Cardiology',qual:'DM Cardiology',exp:'16 yrs',av:true},
+       {n:'Dr. P. Kavitha',spec:'Gynecology',qual:'MS OBG',exp:'13 yrs',av:true},
+     ]},
+  ],
+};
+
+// ── GPS AREA BOUNDS ───────────────────────────────────────────
+const AREAS=[
+  {key:'chennai_north',label:'Chennai — Mogappair / Mugappair / Ambattur',short:'Mogappair / Mugappair',lat:[13.060,13.120],lng:[80.145,80.210]},
+  {key:'chennai_central',label:'Chennai — Anna Nagar / Kilpauk / Shenoy Nagar',short:'Anna Nagar Area',lat:[13.070,13.105],lng:[80.195,80.240]},
+  {key:'chennai_south',label:'Chennai — Adyar / Mylapore / Velachery',short:'Adyar / Mylapore',lat:[12.960,13.045],lng:[80.230,80.290]},
+  {key:'chennai_city',label:'Chennai — Greams Road / Egmore / Kilpauk',short:'Central Chennai',lat:[13.040,13.080],lng:[80.240,80.280]},
+  {key:'chennai_west',label:'Chennai — Porur / Manapakkam / Vadapalani',short:'Porur / Manapakkam',lat:[13.000,13.055],lng:[80.155,80.220]},
+  {key:'madurai',label:'Madurai',short:'Madurai',lat:[9.85,10.10],lng:[77.95,78.25]},
+  {key:'coimbatore',label:'Coimbatore',short:'Coimbatore',lat:[10.80,11.15],lng:[76.80,77.15]},
+  {key:'trichy',label:'Trichy / Tiruchirappalli',short:'Trichy',lat:[10.65,11.00],lng:[78.55,78.85]},
+];
+
+// ── SPECIALTIES ───────────────────────────────────────────────
+const SPECS=[
+  {id:'cardiology',name:'Cardiology',icon:'❤️',color:'#dc2626',bg:'#fef2f2',desc:'Heart & cardiovascular health',syms:['Chest pain','Palpitations','Shortness of breath','Fatigue','Swollen legs','Dizziness','High BP','Irregular heartbeat']},
+  {id:'dermatology',name:'Dermatology',icon:'🧴',color:'#7c3aed',bg:'#f5f3ff',desc:'Skin, hair & nail conditions',syms:['Rash / itching','Acne','Dry flaky skin','Hair loss','Nail discoloration','Skin darkening','Wound not healing','Eczema']},
+  {id:'neurology',name:'Neurology',icon:'🧠',color:'#1d4ed8',bg:'#eff6ff',desc:'Brain, spine & nervous system',syms:['Headache / migraine','Seizures','Memory loss','Numbness','Tremors','Balance issues','Blurred vision','Speech problems']},
+  {id:'orthopedics',name:'Orthopedics',icon:'🦴',color:'#0d9488',bg:'#f0fdfa',desc:'Bones, joints & muscles',syms:['Joint pain','Back pain','Fracture','Swollen joint','Limited motion','Muscle cramp','Sports injury','Arthritis']},
+  {id:'gastro',name:'Gastro',icon:'🫀',color:'#ea580c',bg:'#fff7ed',desc:'Digestive system & abdomen',syms:['Abdominal pain','Nausea / vomiting','Acidity / GERD','Diarrhea','Constipation','Bloating','Blood in stool','Jaundice']},
+  {id:'pulmonology',name:'Pulmonology',icon:'🫁',color:'#0891b2',bg:'#ecfeff',desc:'Lungs & respiratory health',syms:['Chronic cough','Breathlessness','Wheezing','Chest tightness','Coughing blood','Sleep apnea','Asthma attack','Low oxygen']},
+  {id:'ophthalmology',name:'Ophthalmology',icon:'👁️',color:'#059669',bg:'#ecfdf5',desc:'Eyes & vision health',syms:['Blurred vision','Eye pain','Redness','Watering eyes','Double vision','Night blindness','Floaters','Photosensitivity']},
+  {id:'ent',name:'ENT',icon:'👂',color:'#d97706',bg:'#fffbeb',desc:'Ear, nose & throat',syms:['Ear pain','Hearing loss','Tinnitus','Sore throat','Runny nose','Sinus pain','Voice change','Swallowing difficulty']},
+  {id:'pediatrics',name:'Pediatrics',icon:'👶',color:'#db2777',bg:'#fdf2f8',desc:'Child health (0–18 yrs)',syms:['Fever','Cough & cold','Poor appetite','Rash','Vomiting','Ear infection','Growth concern','Vaccination due']},
+  {id:'psychiatry',name:'Psychiatry',icon:'🧘',color:'#6d28d9',bg:'#f5f3ff',desc:'Mental health & wellbeing',syms:['Anxiety','Depression','Insomnia','Mood swings','Panic attacks','Stress / burnout','Memory issues','Eating disorder']},
+  {id:'gynecology',name:'Gynecology',icon:'🌸',color:'#e11d48',bg:'#fff1f2',desc:"Women's reproductive health",syms:['Irregular periods','Pelvic pain','Discharge','Pregnancy query','Hormonal issues','Menopause','UTI','Breast pain']},
+  {id:'endocrinology',name:'Endocrinology',icon:'⚗️',color:'#0369a1',bg:'#f0f9ff',desc:'Hormones, diabetes & thyroid',syms:['High blood sugar','Thyroid symptoms','Weight changes','Fatigue','Excessive thirst','Hair thinning','Mood changes','Sweating']},
+];
+
+// ── STATE ─────────────────────────────────────────────────────
+let curSpec=SPECS[0],selSyms=[],uploads=[],isRec=false,recog=null;
+let areaKey=null,locDetected=false;
+let chatH=JSON.parse(localStorage.getItem('mq_ch')||'{}');
+let appts=JSON.parse(localStorage.getItem('mq_ap')||'[]');
+let rems=JSON.parse(localStorage.getItem('mq_re')||'[]');
+let stats=JSON.parse(localStorage.getItem('mq_st')||'{"checks":0,"critical":0,"appts":0,"sos":0}');
+let actH=JSON.parse(localStorage.getItem('mq_ah')||'[]');
+
+// ── LOCATION ──────────────────────────────────────────────────
+function detectGPS(){
+  if(!navigator.geolocation){toast('GPS not available. Please select manually.');return;}
+  toast('🛰️ Detecting your location…');
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const lat=pos.coords.latitude,lng=pos.coords.longitude;
+    for(const a of AREAS){
+      if(lat>=a.lat[0]&&lat<=a.lat[1]&&lng>=a.lng[0]&&lng<=a.lng[1]){
+        setArea(a.key,a.short+' (GPS)');return;
+      }
+    }
+    toast('Location outside database. Please select manually.');
+  },err=>{toast('GPS denied or failed. Please select your area manually.');});
+}
+
+function setArea(key,label){
+  areaKey=key;locDetected=true;
+  localStorage.setItem('mq_area',key);
+  document.getElementById('clbl').textContent='📍 '+(label||key);
+  show('specialty');
+  toast('📍 Set: '+(label||key));
+}
+
+function showLocPicker(){
+  document.getElementById('main').innerHTML=`
+<div class="lpick">
+  <h3>📍 Select Your Location</h3>
+  <p>We show hospitals & clinics closest to you — not cities far away</p>
+  <div class="cgrid">
+    <button class="cbtn" onclick="setArea('chennai_north','Mogappair / Mugappair')">Mogappair<br><span style="font-size:9px;opacity:.7">Mugappair · Ambattur · Padi</span></button>
+    <button class="cbtn" onclick="setArea('chennai_central','Anna Nagar / Kilpauk')">Anna Nagar<br><span style="font-size:9px;opacity:.7">Kilpauk · Shenoy Nagar</span></button>
+    <button class="cbtn" onclick="setArea('chennai_south','Adyar / Mylapore')">Adyar / Mylapore<br><span style="font-size:9px;opacity:.7">Velachery · T.Nagar</span></button>
+    <button class="cbtn" onclick="setArea('chennai_city','Central Chennai')">Central Chennai<br><span style="font-size:9px;opacity:.7">Greams Rd · Egmore</span></button>
+    <button class="cbtn" onclick="setArea('chennai_west','Porur / Manapakkam')">Porur / Vadapalani<br><span style="font-size:9px;opacity:.7">Manapakkam · KK Nagar</span></button>
+    <button class="cbtn" onclick="setArea('madurai','Madurai')">Madurai<br><span style="font-size:9px;opacity:.7">All areas</span></button>
+    <button class="cbtn" onclick="setArea('coimbatore','Coimbatore')">Coimbatore<br><span style="font-size:9px;opacity:.7">All areas</span></button>
+    <button class="cbtn" onclick="setArea('trichy','Trichy')">Trichy<br><span style="font-size:9px;opacity:.7">Tiruchirappalli</span></button>
+  </div>
+  <button onclick="detectGPS()" style="margin-top:8px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4);color:#fff;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:700">🛰️ Auto-detect via GPS</button>
+</div>`;
+}
+
+function changeLoc(){locDetected=false;areaKey=null;showLocPicker();}
+const CLOC=`<button type="button" class="cloc" onclick="changeLoc()">📍 Change Location</button>`;
+
+// ── SIDEBAR ───────────────────────────────────────────────────
+function buildSB(f=''){
+  const sl=document.getElementById('sl');sl.innerHTML='';
+  SPECS.filter(s=>s.name.toLowerCase().includes(f.toLowerCase())||!f).forEach(s=>{
+    const b=document.createElement('button');b.className='sbtn'+(s.id===curSpec.id?' active':'');
+    b.innerHTML=`<span class="sic" style="background:${s.bg}">${s.icon}</span>${s.name}`;
+    b.onclick=()=>{curSpec=s;selSyms=[];uploads=[];buildSB(document.getElementById('ss').value||'');show('specialty');if(window.innerWidth<=580)document.getElementById('sidebar').classList.remove('open');};
+    sl.appendChild(b);
+  });
+}
+
+function show(sec){
+  const m=document.getElementById('main');
+  ['nav-db','nav-appts','nav-rems','nav-hosps'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.remove('active');});
+  const nv=document.getElementById('nav-'+sec);if(nv)nv.classList.add('active');
+  if(!locDetected&&sec==='specialty'){showLocPicker();return;}
+  if(sec==='specialty') m.innerHTML=buildSpec();
+  else if(sec==='dashboard') m.innerHTML=buildDB();
+  else if(sec==='appts') m.innerHTML=buildAppts();
+  else if(sec==='rems') m.innerHTML=buildRems();
+  else if(sec==='hosps') m.innerHTML=buildAllH();
+}
+
+function getFac(sf=''){
+  const all=DB[areaKey]||[];
+  if(!sf) return all;
+  return all.filter(h=>h.specialties.some(s=>s.toLowerCase().includes(sf.toLowerCase())));
+}
+
+// ── SPECIALTY HTML ────────────────────────────────────────────
+function buildSpec(){
+  const s=curSpec;
+  const chips=s.syms.map(sym=>`<button type="button" class="chip${selSyms.includes(sym)?' sel':''}" data-sym="${sym}">${sym}</button>`).join('');
+  const msgs=(chatH[s.id]||[]).map(m=>`<div class="bbl ${m.role}">${esc(m.content)}</div>`).join('');
+  const fac=getFac(s.name);
+  const aLbl=AREAS.find(a=>a.key===areaKey)?.short||areaKey||'Your Area';
+  const hcards=fac.map(h=>buildHC(h,s.name)).join('')||
+    `<div class="disc">No ${s.name} facilities found for ${aLbl}.<br><button class="bo btn bsm" style="margin-top:5px" onclick="show('hosps')">View all</button></div>`;
+
+  return `
+${CLOC}
+<div class="sh" style="background:${s.bg}">
+  <div style="font-size:26px">${s.icon}</div>
+  <div><h2 style="color:${s.color}">${s.name}</h2><p style="color:${s.color}">${s.desc} · 📍 ${aLbl}</p></div>
+</div>
+<div class="tabs">
+  <button class="tab active" onclick="stab(this,'ts')">🩺 Symptoms</button>
+  <button class="tab" onclick="stab(this,'td')">🏥 Nearby</button>
+  <button class="tab" onclick="stab(this,'tc')">🤖 AI Chat</button>
+</div>
+
+<div id="ts">
+<div class="card">
+  <div class="ctitle">🩺 Select Symptoms <span style="font-weight:400;color:var(--muted);font-size:11px">(tap multiple)</span></div>
+  <div class="sgrid">${chips}</div>
+  <textarea id="stxt" placeholder="Or describe your symptoms in detail…"></textarea>
+
+  <div class="ctitle" style="margin-top:2px">📷 Upload Image <span style="font-weight:400;color:var(--muted);font-size:11px">(optional)</span></div>
+  <div class="uz"><input type="file" accept="image/*" multiple onchange="addImgs(event)">
+    <div style="font-size:18px;margin-bottom:2px">📸</div>
+    <div style="color:var(--muted);font-size:11px">Tap to upload photo</div>
+  </div>
+  <div class="pw" id="pw"></div>
+
+  <div class="ctitle">🎙️ Voice Note <span style="font-weight:400;color:var(--muted);font-size:11px">(optional — speak your symptoms)</span></div>
+  <!-- WHATSAPP-STYLE VOICE RECORDER -->
+  <div style="border:1.5px solid var(--border);border-radius:12px;padding:12px;margin-bottom:6px;background:var(--bg)">
+    <!-- idle state -->
+    <div id="v-idle" style="display:flex;align-items:center;gap:10px">
+      <button type="button" id="v-rec-btn" onclick="startR()"
+        style="width:52px;height:52px;border-radius:50%;border:none;background:#25d366;color:#fff;font-size:22px;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(37,211,102,.4);display:flex;align-items:center;justify-content:center">
+        🎙️
+      </button>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--text)">Tap mic to record</div>
+        <div style="font-size:11px;color:var(--muted)">Describe your symptoms by voice</div>
+      </div>
+    </div>
+    <!-- recording state -->
+    <div id="v-recording" style="display:none;align-items:center;gap:10px">
+      <button type="button" onclick="stopR()"
+        style="width:52px;height:52px;border-radius:50%;border:none;background:var(--red);color:#fff;font-size:20px;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(220,38,38,.4);animation:recpulse 1s infinite;display:flex;align-items:center;justify-content:center">
+        ⏹
+      </button>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+          <span style="width:9px;height:9px;border-radius:50%;background:var(--red);animation:pd 1s infinite;display:inline-block"></span>
+          <span style="font-size:12px;font-weight:700;color:var(--red)">Recording…</span>
+          <span id="v-secs" style="font-size:13px;font-weight:800;color:var(--red);font-family:monospace;margin-left:auto">0:00</span>
+        </div>
+        <!-- waveform bars -->
+        <div id="v-wave" style="display:flex;align-items:flex-end;gap:2px;height:28px">
+          ${Array.from({length:24},(_,i)=>`<div class="wb" id="wb${i}" style="width:4px;border-radius:3px;background:var(--red);height:4px;transition:height .1s"></div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <!-- playback state -->
+    <div id="v-playback" style="display:none;align-items:center;gap:10px">
+      <button type="button" id="v-play-btn" onclick="togglePlay()"
+        style="width:44px;height:44px;border-radius:50%;border:none;background:#25d366;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+        ▶
+      </button>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:11px;font-weight:700;color:var(--text)">Voice Note</span>
+          <span id="v-dur" style="font-size:11px;color:var(--muted);font-family:monospace">0:00</span>
+        </div>
+        <div style="position:relative;height:6px;background:var(--border);border-radius:3px;cursor:pointer" onclick="seekAudio(event,this)">
+          <div id="v-prog" style="position:absolute;left:0;top:0;height:100%;background:#25d366;border-radius:3px;width:0%;transition:width .1s"></div>
+        </div>
+      </div>
+      <button type="button" onclick="deleteRec()"
+        style="width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border);background:none;color:var(--muted);font-size:14px;cursor:pointer;flex-shrink:0">🗑</button>
+    </div>
+  </div>
+
+  <button type="button" class="btn br" id="abtn" onclick="analyze()" style="margin-top:9px">🤖 Analyze with AI</button>
+  <div id="ao"></div>
+</div>
+</div>
+
+<div id="td" style="display:none">
+  <div class="warn">⚠️ <b>Important — About Booking:</b> The "Book" button redirects you to the hospital's <b>official website or Practo page</b> to complete your appointment there. <b>MediQ Pro does not directly communicate with hospitals</b> — your appointment is confirmed only when you submit it on the hospital's portal. Always call the hospital to reconfirm.</div>
+  <div class="disc">Doctors listed are verified specialists at these hospitals. Call ahead to confirm availability and slots.</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+    <span style="font-size:12px;font-weight:700">📍 ${aLbl} · ${fac.length} facilities</span>
+    <button type="button" class="cloc" onclick="changeLoc()">📍 Change</button>
+  </div>
+  ${hcards}
+  <div class="card" style="background:var(--bl);border-color:var(--bm)">
+    <div class="ctitle" style="color:var(--blue)">📅 Save Appointment Reminder</div>
+    <div class="warn" style="margin-bottom:8px">📌 This saves a local reminder only. To <b>actually book</b>, use the "Book Online" button on each hospital card above.</div>
+    <div class="fr"><input type="text" id="qn" placeholder="Your name"><input type="tel" id="qp" placeholder="Phone"></div>
+    <div class="fr"><input type="date" id="qd"><input type="time" id="qt"></div>
+    <select id="qh" style="margin-bottom:5px" onchange="refreshDocs(this.value,'${s.id}')">
+      ${fac.map(h=>`<option value="${h.id}">${h.name}</option>`).join('')}
+    </select>
+    <select id="qdoc" style="margin-bottom:5px">
+      ${fac[0]?fac[0].doctors.map(d=>`<option>${d.n} — ${d.spec}</option>`).join(''):'<option>Walk-in / OPD</option>'}
+    </select>
+    <button type="button" class="btn bb" onclick="bookForm()">💾 Save Reminder</button>
+  </div>
+</div>
+
+<div id="tc" style="display:none">
+<div class="card">
+  <div class="ctitle">🤖 AI ${s.name} Assistant</div>
+  <div class="cbox" id="ch">${msgs||`<div class="bbl ai">Hello! I'm your ${s.name} AI assistant. Ask me about symptoms, treatments or medications.</div>`}</div>
+  <div class="cr">
+    <input type="text" id="ci" placeholder="Ask a question…" onkeydown="if(event.key==='Enter')chat()">
+    <button type="button" class="cs" onclick="chat()">➤</button>
+  </div>
+</div>
+</div>`;
+}
+
+// ── HOSPITAL CARD ─────────────────────────────────────────────
+function buildHC(h,sf){
+  const isC=h.type==='clinic';
+  const fd=sf?h.doctors.filter(d=>d.spec.toLowerCase().includes(sf.toLowerCase().split(' ')[0])):[];
+  const docs=fd.length?fd:h.doctors;
+  const mq=encodeURIComponent(h.name+', '+h.address);
+  const msrc=`https://maps.google.com/maps?q=${mq}&output=embed`;
+  const dir=`https://maps.google.com/maps?daddr=${h.lat},${h.lng}`;
+  return `
+<div class="hc">
+  <div class="hh" onclick="togH('hb-${h.id}','ar-${h.id}')">
+    <div style="width:36px;height:36px;border-radius:7px;background:${isC?'#f0fdf4':'#fef2f2'};display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">${isC?'🏪':'🏥'}</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-weight:700;font-size:12px">${h.name} <span style="font-size:9px;background:${isC?'#dcfce7':'#fff7ed'};color:${isC?'#16a34a':'#ea580c'};border-radius:10px;padding:1px 5px">${isC?'Clinic':'Hospital'}</span></div>
+      <div style="font-size:10px;color:var(--green);font-weight:600">${h.badge}</div>
+      <div style="font-size:10px;color:var(--muted)">📍 ${h.area} · ${h.address.substring(0,50)}…</div>
+    </div>
+    <span style="color:var(--muted);font-size:16px;flex-shrink:0" id="ar-${h.id}">+</span>
+  </div>
+  <div class="hb" id="hb-${h.id}">
+    <div style="padding:8px 12px;font-size:11px;color:var(--muted);background:var(--bg);border-bottom:1px solid var(--border)">${h.about}</div>
+    <iframe class="mf" loading="lazy" src="${msrc}" allowfullscreen></iframe>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;padding:8px 12px;border-bottom:1px solid var(--border)">
+      <a href="${h.booking||'#'}" target="_blank" style="display:block;background:var(--red);color:#fff;border-radius:6px;padding:6px;text-align:center;text-decoration:none;font-size:10px;font-weight:700">📅 Book Online</a>
+      <button type="button" onclick="call('${h.phone}','${h.name}')" style="background:var(--green);color:#fff;border:none;border-radius:6px;padding:6px;font-size:10px;font-weight:700;cursor:pointer">📞 Call</button>
+      <a href="${dir}" target="_blank" style="display:block;background:var(--blue);color:#fff;border-radius:6px;padding:6px;text-align:center;text-decoration:none;font-size:10px;font-weight:700">🗺️ Directions</a>
+    </div>
+    <div style="padding:6px 12px;font-size:11px;border-bottom:1px solid var(--border);color:var(--muted)">📞 <b style="color:var(--text)">${h.phone}</b>${h.emergency?' &nbsp;🚨 <b style="color:var(--red)">'+h.emergency+'</b>':''}</div>
+    <div style="padding:5px 12px 2px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Doctors at ${h.name}</div>
+    ${docs.map(d=>`
+    <div class="dr">
+      <div style="min-width:0">
+        <div style="font-weight:600;font-size:11px">${d.n}</div>
+        <div style="font-size:10px;color:var(--muted)">${d.spec} · ${d.qual} · ${d.exp}</div>
+      </div>
+      <div style="display:flex;gap:4px;align-items:center;flex-shrink:0;margin-left:5px">
+        <span class="${d.av?'ay':'an'}">${d.av?'Available':'Busy'}</span>
+        <button type="button" class="btn br bsm" onclick="qBook('${d.n.replace(/'/g,"\\'")}','${h.name.replace(/'/g,"\\'")}','${h.phone}','${h.booking||''}')">Book</button>
+      </div>
+    </div>`).join('')}
+    <div style="padding:8px 12px;display:flex;flex-wrap:wrap;gap:4px;border-top:1px solid var(--border)">
+      ${h.specialties.map(sp=>`<span style="background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:2px 7px;font-size:10px;color:var(--muted)">${sp}</span>`).join('')}
+    </div>
+  </div>
+</div>`;
+}
+
+function togH(bid,aid){const b=document.getElementById(bid),a=document.getElementById(aid);if(!b)return;const o=b.classList.toggle('open');if(a)a.textContent=o?'−':'+';}
+
+function refreshDocs(hid,specId){
+  const h=Object.values(DB).flat().find(x=>x.id===hid);
+  const sel=document.getElementById('qdoc');if(!h||!sel)return;
+  const sp=SPECS.find(s=>s.id===specId);
+  const fd=sp?h.doctors.filter(d=>d.spec.toLowerCase().includes(sp.name.toLowerCase().split(' ')[0])):[];
+  sel.innerHTML=(fd.length?fd:h.doctors).map(d=>`<option>${d.n} — ${d.spec}</option>`).join('')+'<option>Walk-in / OPD</option>';
+}
+
+function buildAllH(){
+  const al=AREAS.find(a=>a.key===areaKey);
+  const lbl=al?al.short:areaKey||'Your Area';
+  const all=DB[areaKey]||[];
+  const hs=all.filter(h=>h.type==='hospital');
+  const cs=all.filter(h=>h.type==='clinic');
+  return `${CLOC}
+  <h2 style="font-size:14px;font-weight:800;margin-bottom:8px">🏥 ${lbl} — Health Directory</h2>
+  <div class="warn">📌 <b>About Appointments:</b> The "Book Online" button opens the hospital's official website or Practo. MediQ Pro does <b>not</b> directly book for you — always call the hospital to confirm your slot.</div>
+  <div class="disc">All data sourced from official hospital websites and verified public records. Call to confirm availability.</div>
+  <div style="font-size:12px;font-weight:700;margin-bottom:7px">🏥 Hospitals (${hs.length})</div>
+  ${hs.map(h=>buildHC(h,'')).join('')}
+  <div style="font-size:12px;font-weight:700;margin:10px 0 7px">🏪 Clinics & Specialty Centres (${cs.length})</div>
+  ${cs.length?cs.map(h=>buildHC(h,'')).join(''):`<p style="color:var(--muted);font-size:11px">No clinics listed for ${lbl} yet.</p>`}`;
+}
+
+// ── TABS ──────────────────────────────────────────────────────
+function stab(btn,id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
+  ['ts','td','tc'].forEach(t=>{const e=document.getElementById(t);if(e)e.style.display=(t===id?'block':'none');});
+}
+
+// ── IMAGES ───────────────────────────────────────────────────
+function addImgs(e){
+  Array.from(e.target.files).forEach(f=>{
+    uploads.push(f);
+    const r=new FileReader();
+    r.onload=ev=>{const img=document.createElement('img');img.src=ev.target.result;img.className='pi';const a=document.getElementById('pw');if(a)a.appendChild(img);};
+    r.readAsDataURL(f);
+  });
+  toast(`✅ ${e.target.files.length} image(s) added`);
+}
+
+// ── VOICE (FIXED: separate start/stop, always shows live text) ─
+function startR(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){toast('Voice not supported. Use Chrome browser.');return;}
+  if(isRec) return;
+  recog=new SR();
+  recog.lang='en-IN';
+  recog.continuous=true;
+  recog.interimResults=true;
+
+  const vtxt=document.getElementById('vtxt');
+  const vdone=document.getElementById('vdone');
+  const startbtn=document.getElementById('startbtn');
+  const stopbtn=document.getElementById('stopbtn');
+
+  if(vtxt){vtxt.style.display='block';vtxt.textContent='🎙️ Listening… speak now';}
+  if(vdone) vdone.style.display='none';
+  if(startbtn) startbtn.style.display='none';
+  if(stopbtn) stopbtn.style.display='inline-flex';
+
+  let fullText='';
+
+  recog.onresult=e=>{
+    let interim='',final_='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal){final_+=e.results[i][0].transcript+' ';}
+      else{interim+=e.results[i][0].transcript;}
+    }
+    if(final_.trim()){
+      fullText+=final_.trim()+' ';
+      const box=document.getElementById('stxt');
+      if(box) box.value=fullText.trim();
+    }
+    if(vtxt) vtxt.textContent=interim||('🎙️ Heard: '+fullText)||'🎙️ Listening…';
+  };
+
+  recog.onerror=e=>{
+    toast('Mic error: '+e.error+'. Check browser mic permissions.');
+    stopR();
+  };
+
+  recog.onend=()=>{if(isRec) stopR();};
+
+  try{
+    recog.start();
+    isRec=true;
+    toast('🎙️ Recording started — speak now');
+  } catch(e){
+    toast('Could not start mic: '+e.message);
+    isRec=false;
+    if(startbtn) startbtn.style.display='inline-flex';
+    if(stopbtn) stopbtn.style.display='none';
+  }
+}
+
+function stopR(){
+  if(recog){try{recog.stop();}catch(e){}recog=null;}
+  isRec=false;
+  const startbtn=document.getElementById('startbtn');
+  const stopbtn=document.getElementById('stopbtn');
+  const vtxt=document.getElementById('vtxt');
+  const vdone=document.getElementById('vdone');
+  if(startbtn) startbtn.style.display='inline-flex';
+  if(stopbtn) stopbtn.style.display='none';
+  if(vtxt) vtxt.style.display='none';
+  const box=document.getElementById('stxt');
+  if(vdone){
+    vdone.style.display='block';
+    vdone.textContent=box?.value?'✅ Voice transcribed: "'+box.value.substring(0,60)+(box.value.length>60?'…':'')+'"':'⚠️ Nothing was detected. Try speaking clearly or type your symptoms.';
+  }
+  toast('⏹ Recording stopped');
+}
+
+// ── AI ANALYZE ────────────────────────────────────────────────
+async function analyze(){
+  const ext=document.getElementById('stxt')?.value.trim()||'';
+  const hc=selSyms.length>0,ht=ext.length>0,hp=uploads.length>0,hv=!!recBlob;
+  if(!hc&&!ht&&!hp&&!hv){toast('Select a symptom, describe, upload a photo, or record a voice note.');return;}
+  const btn=document.getElementById('abtn');btn.textContent='⏳ Analyzing…';btn.disabled=true;
+  const sl=selSyms.length?selSyms.join(', '):ext;
+  const prompt=`You are a ${curSpec.name} specialist AI for Indian patients.
+Symptoms: "${sl}".${hp?` Patient uploaded ${uploads.length} image(s).`:''}${hv?' Patient provided voice description.':''}
+Extra: "${ext}".
+Respond ONLY with JSON (no markdown, no extra text):
+{"condition":"condition name","severity":"mild|moderate|critical","explanation":"2-3 clear sentences","action":"immediate step-by-step actions","specialist_needed":true|false,"warning_signs":["s1","s2","s3"],"home_care":"one tip","call_ambulance":false}`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    if(data.error) throw new Error(data.error.message);
+    const raw=data.content.map(i=>i.text||'').join('').replace(/```json|```/g,'').trim();
+    const mx=raw.match(/\{[\s\S]*\}/);if(!mx)throw new Error('Invalid AI response');
+    const r=JSON.parse(mx[0]);
+    showResult(r);logS('check',r.severity==='critical');logH(`🩺 ${curSpec.name}: ${r.condition} (${r.severity})`);
+  }catch(err){
+    const msg=err.message||'';
+    let friendly='';
+    if(msg.includes('exceeded_limit')||msg.includes('rate_limit')||msg.includes('overload')){
+      friendly=`<b>⏳ AI Usage Limit Reached</b><br>
+<span style="font-size:11px">The AI has hit its 5-hour usage limit. Please try again after <b>some time</b> (usually resets within 1–2 hours).<br><br>
+Meanwhile:<br>
+• Select your symptoms above and tap <b>Find Nearby Hospitals</b><br>
+• Call <b>108</b> for emergencies<br>
+• Use the AI Chat tab for simpler questions</span>`;
+    } else if(msg.includes('network')||msg.includes('fetch')||msg.toLowerCase().includes('failed')){
+      friendly=`<b>⚠️ No Internet Connection</b><br><span style="font-size:11px">Please check your Wi-Fi or mobile data and try again.</span>`;
+    } else {
+      friendly=`<b>⚠️ AI Unavailable</b><br><span style="font-size:11px">${msg||'Unexpected error. Please try again.'}</span>`;
+    }
+    document.getElementById('ao').innerHTML=`<div class="rb moderate">${friendly}<br><br><button type="button" class="btn br bsm" style="margin-top:4px" onclick="stab(document.querySelectorAll('.tab')[1],'td')">🏥 Find Nearby Hospitals</button> &nbsp; <button type="button" class="btn bsm" style="background:#1d4ed8;color:#fff;margin-top:4px" onclick="call('108','Ambulance')">🚑 Call 108</button></div>`;
+  }
+  btn.textContent='🤖 Analyze with AI';btn.disabled=false;
+}
+
+function showResult(r){
+  const p={mild:22,moderate:58,critical:95},c={mild:'#22c55e',moderate:'#f59e0b',critical:'#ef4444'};
+  const w=r.warning_signs?.length?`<div style="margin-top:6px"><b>⚠️ Watch for:</b><ul style="padding-left:13px;margin-top:2px">${r.warning_signs.map(s=>`<li style="margin-bottom:1px">${s}</li>`).join('')}</ul></div>`:'';
+  document.getElementById('ao').innerHTML=`
+<div class="rb ${r.severity}">
+  <span style="display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;background:${c[r.severity]}22;color:${c[r.severity]}">${r.severity.toUpperCase()}</span>
+  <div class="svbar"><div class="svfill" style="width:${p[r.severity]}%;background:${c[r.severity]}"></div></div>
+  <p style="font-weight:700;font-size:12px;margin:4px 0 3px">🔍 ${r.condition}</p>
+  <p style="font-size:12px">${r.explanation}</p>
+  <div style="background:rgba(0,0,0,.06);border-radius:6px;padding:7px;margin-top:5px"><b style="font-size:11px">📋 Action:</b><p style="font-size:12px;margin-top:2px">${r.action}</p></div>
+  ${r.home_care?`<p style="font-size:11px;color:var(--muted);margin-top:4px">🏠 ${r.home_care}</p>`:''}
+  ${w}
+  ${r.specialist_needed?`<button type="button" class="btn bo bsm" style="margin-top:6px" onclick="stab(document.querySelectorAll('.tab')[1],'td')">🏥 Find Nearby Hospitals</button>`:''}
+  ${r.call_ambulance?`<button type="button" class="btn br" style="margin-top:5px" onclick="call('108','Ambulance')">🚑 Call 108 Now</button>`:''}
+</div>`;
+}
+
+// ── AI CHAT ───────────────────────────────────────────────────
+async function chat(){
+  const inp=document.getElementById('ci');const q=inp.value.trim();if(!q)return;
+  inp.value='';const id=curSpec.id;
+  chatH[id]=chatH[id]||[];chatH[id].push({role:'user',content:q});
+  addB('ch',q,'user');addB('ch','Thinking…','ai loading');
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,
+        system:`You are a helpful ${curSpec.name} specialist AI for Indian patients. Be concise and practical. No markdown.`,
+        messages:chatH[id].map(m=>({role:m.role,content:m.content}))})});
+    const data=await res.json();if(data.error)throw new Error(data.error.message);
+    const rep=data.content.map(i=>i.text||'').join('').trim();
+    rmL('ch');addB('ch',rep,'ai');chatH[id].push({role:'assistant',content:rep});sv('mq_ch',chatH);
+  }catch(err){
+    rmL('ch');
+    const msg=err.message||'';
+    const txt=msg.includes('exceeded_limit')||msg.includes('rate_limit')
+      ?'⏳ AI usage limit reached. Please wait 1–2 hours and try again. You can still browse hospitals and call 108.'
+      :'⚠️ '+(msg||'AI unavailable. Please try again.');
+    addB('ch',txt,'ai');
+  }
+}
+function addB(id,msg,type){const w=document.getElementById(id);if(!w)return;const d=document.createElement('div');d.className='bbl '+type;d.textContent=msg;w.appendChild(d);w.scrollTop=w.scrollHeight;}
+function rmL(id){const w=document.getElementById(id);if(!w)return;const l=w.querySelector('.bbl.loading');if(l)w.removeChild(l);}
+
+// ── BOOK ──────────────────────────────────────────────────────
+function qBook(dn,hn,ph,bu){
+  const nm=prompt('Your name (for local reminder):');if(!nm)return;
+  const dt=prompt('Preferred date (e.g. 15/06/2025):');if(!dt)return;
+  appts.unshift({id:Date.now(),doctor:dn,hospital:hn,area:AREAS.find(a=>a.key===areaKey)?.short,phone:ph,bookingUrl:bu,date:dt,time:'OPD',patient:nm});
+  sv('mq_ap',appts);logS('appt');logH(`📅 Booked: ${dn} at ${hn}`);
+  toast('✅ Reminder saved locally');
+  if(bu&&confirm(`Open ${hn}'s official booking page to actually confirm?`))window.open(bu,'_blank');
+}
+function bookForm(){
+  const nm=gv('qn'),ph=gv('qp'),dt=gv('qd'),tm=gv('qt'),hid=gv('qh'),doc=gv('qdoc');
+  if(!nm||!dt){toast('Enter your name and date.');return;}
+  const h=Object.values(DB).flat().find(x=>x.id===hid)||(DB[areaKey]||[])[0];if(!h)return;
+  appts.unshift({id:Date.now(),doctor:doc,hospital:h.name,area:AREAS.find(a=>a.key===areaKey)?.short,phone:h.phone,bookingUrl:h.booking,date:dt,time:tm,patient:nm});
+  sv('mq_ap',appts);logS('appt');logH(`📅 Reminder: ${doc} at ${h.name}`);
+  toast('✅ Reminder saved locally!');
+  document.getElementById('qn').value='';document.getElementById('qd').value='';document.getElementById('qt').value='';
+  if(confirm(`Open ${h.name}'s official booking portal to confirm your appointment?`))window.open(h.booking,'_blank');
+}
+function delA(id){appts=appts.filter(a=>a.id!==id);sv('mq_ap',appts);show('appts');}
+function buildAppts(){
+  const it=appts.length?appts.map(a=>`<div class="aitem"><div style="flex:1;min-width:0"><b style="font-size:11px">👨‍⚕️ ${a.doctor}</b><div style="font-size:10px;color:var(--muted)">🏥 ${a.hospital}${a.area?' · '+a.area:''}</div><div style="font-size:10px;color:var(--muted)">📅 ${a.date}${a.time?' at '+a.time:''} · ${a.patient}</div><div style="display:flex;gap:4px;margin-top:3px;flex-wrap:wrap">${a.phone?`<button type="button" onclick="call('${a.phone}','${a.hospital}')" style="background:var(--green);color:#fff;border:none;border-radius:5px;padding:2px 8px;font-size:10px;cursor:pointer;font-weight:600">📞 Call</button>`:''} ${a.bookingUrl?`<a href="${a.bookingUrl}" target="_blank" style="background:var(--blue);color:#fff;border-radius:5px;padding:2px 8px;font-size:10px;text-decoration:none;font-weight:600">🌐 Book Online</a>`:''}</div></div><button class="db" onclick="delA(${a.id})">✕</button></div>`).join(''):'<p style="color:var(--muted);font-size:12px">No appointments yet.</p>';
+  return `<div class="card">${CLOC}<div class="ctitle">📅 My Appointment Reminders (${appts.length})</div><div class="warn" style="margin-bottom:8px">📌 These are <b>local reminders only</b>. Use "Book Online" to actually confirm with the hospital.</div>${it}</div>`;
+}
+
+// ── REMINDERS ─────────────────────────────────────────────────
+function addR(){
+  const n=gv('rn'),t=gv('rt'),f=gv('rf'),no=gv('rno');
+  if(!n||!t){toast('Enter medicine name and time.');return;}
+  rems.push({id:Date.now(),name:n,time:t,freq:f,notes:no});sv('mq_re',rems);
+  logH(`💊 Reminder: ${n} at ${t}`);toast('✅ Reminder added!');schedN(n,t);show('rems');
+}
+function delR(id){rems=rems.filter(r=>r.id!==id);sv('mq_re',rems);show('rems');}
+function schedN(n,t){if(!('Notification' in window))return;Notification.requestPermission().then(p=>{if(p!=='granted')return;const[h,m]=t.split(':').map(Number),now=new Date(),dt=new Date();dt.setHours(h,m,0,0);let d=dt-now;if(d<0)d+=86400000;setTimeout(()=>new Notification('💊 Reminder',{body:`Time to take ${n}`}),d);});}
+function buildRems(){
+  const it=rems.length?rems.map(r=>`<div class="ritem"><div><b style="font-size:11px">💊 ${r.name}</b><div style="font-size:10px;color:var(--muted)">⏰ ${r.time} · ${r.freq}${r.notes?' · '+r.notes:''}</div></div><button class="db" onclick="delR(${r.id})">✕</button></div>`).join(''):'<p style="color:var(--muted);font-size:12px">No reminders.</p>';
+  return `<div class="card"><div class="ctitle">💊 Add Reminder</div><input type="text" id="rn" placeholder="Medicine name"><div class="fr"><input type="time" id="rt"><select id="rf"><option>Once daily</option><option>Twice daily</option><option>Thrice daily</option><option>After meals</option><option>Before meals</option><option>As needed</option></select></div><input type="text" id="rno" placeholder="Notes (optional)"><button type="button" class="btn bg2" onclick="addR()">+ Add Reminder</button></div><div class="card"><div class="ctitle">📋 Active Reminders (${rems.length})</div>${it}</div>`;
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────
+function buildDB(){
+  const h=actH.length?actH.slice(0,15).map(x=>`<div class="hi"><div style="color:var(--muted);font-size:10px">${x.t}</div><div>${x.m}</div></div>`).join(''):'<p style="color:var(--muted);font-size:12px">No activity yet.</p>';
+  return `<div class="sg"><div class="sc"><div class="sn">${stats.checks||0}</div><div class="sl">AI Checks</div></div><div class="sc"><div class="sn">${appts.length}</div><div class="sl">Reminders</div></div><div class="sc"><div class="sn" style="color:var(--red)">${stats.critical||0}</div><div class="sl">Critical</div></div><div class="sc"><div class="sn">${rems.length}</div><div class="sl">Meds</div></div></div><div class="card"><div class="ctitle">📈 Activity History</div>${h}</div><div class="card">${CLOC}<button type="button" class="btn bo" onclick="clearAll()">🗑️ Clear All Data</button></div>`;
+}
+function clearAll(){actH=[];stats={checks:0,critical:0,appts:0,sos:0};['mq_ah','mq_st','mq_ch','mq_ap','mq_re'].forEach(k=>localStorage.removeItem(k));appts=[];rems=[];chatH={};show('dashboard');toast('Cleared.');}
+
+// ── UTILS ─────────────────────────────────────────────────────
+function logS(type,isCrit=false){if(type==='check'){stats.checks=(stats.checks||0)+1;if(isCrit)stats.critical=(stats.critical||0)+1;}if(type==='appt')stats.appts=(stats.appts||0)+1;if(type==='sos')stats.sos=(stats.sos||0)+1;sv('mq_st',stats);}
+function logH(msg){actH.unshift({t:new Date().toLocaleString('en-IN'),m:msg});if(actH.length>50)actH.pop();sv('mq_ah',actH);}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function gv(id){const e=document.getElementById(id);return e?e.value.trim():'';}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function call(num,label){document.getElementById('ctitle').textContent='Call '+label;document.getElementById('cdesc').textContent='Dial from your phone:';document.getElementById('cnum').textContent=num;document.getElementById('clink').href='tel:'+num;document.getElementById('clink').textContent='📞 Call '+num;document.getElementById('cmodal').classList.add('open');logS('sos');logH('🆘 SOS: '+num);}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+document.getElementById('cmodal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+function toggleTheme(){const d=document.body.dataset.theme==='dark';document.body.dataset.theme=d?'light':'dark';document.getElementById('tmbtn').textContent=d?'🌙':'☀️';}
+
+// ── INIT ──────────────────────────────────────────────────────
+const saved=localStorage.getItem('mq_area');
+if(saved&&DB[saved]){areaKey=saved;locDetected=true;const al=AREAS.find(a=>a.key===saved);document.getElementById('clbl').textContent='📍 '+(al?.short||saved);}
+buildSB();
+if(locDetected)show('specialty');else showLocPicker();
+
+new MutationObserver(()=>{
+  document.querySelectorAll('.chip:not([data-b])').forEach(btn=>{
+    btn.setAttribute('data-b','1');
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      const sym=this.dataset.sym;
+      if(selSyms.includes(sym)){selSyms=selSyms.filter(s=>s!==sym);this.classList.remove('sel');}
+      else{selSyms.push(sym);this.classList.add('sel');}
+    });
+  });
+}).observe(document.getElementById('main'),{childList:true,subtree:true});
+</script>
+</body>
+</html>
